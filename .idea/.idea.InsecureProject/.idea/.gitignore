@@ -8,3 +8,5 @@
 /modules.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+
+/sonarlint
