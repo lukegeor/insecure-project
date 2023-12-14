@@ -1,3 +1,4 @@
+using InsecureProject.Controllers;
 using InsecureProject.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<DbModelContext>();
+builder.Services.AddScoped<WeatherForecastController>();
 
 var app = builder.Build();
 
