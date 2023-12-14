@@ -51,8 +51,7 @@
   },
   "overrides": {
     "autoprefixer": "10.4.5",
-    "webpack": "5.81.0",
-    "vite": "^4.4.12"
+    "webpack": "5.81.0"
   },
   "optionalDependencies": {}
 }
