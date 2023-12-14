@@ -5,14 +5,23 @@ namespace InsecureProject.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController(DbModelContext dbContext, ILogger<WeatherForecastController> logger) : ControllerBase
+public class WeatherForecastController : ControllerBase
 {
+    private readonly DbModelContext _dbContext;
+    private readonly ILogger<WeatherForecastController> _logger;
+
+    public WeatherForecastController(DbModelContext dbContext, ILogger<WeatherForecastController> logger)
+    {
+        _dbContext = dbContext;
+        _logger = logger;
+    }
+
     [HttpGet("{city}")]
     public IEnumerable<WeatherForecast> Get([FromRoute]string city)
     {
-        logger.LogDebug($"Get called for city {city}.");
+        _logger.LogDebug($"Get called for city {city}.");
 
-        var results = dbContext.Forecasts.Where(f => f.City.ToLower().Equals(city.ToLower())).ToList();
+        var results = _dbContext.Forecasts.Where(f => f.City.ToLower().Equals(city.ToLower())).ToList();
         var transformed = results 
             .Select(f => new WeatherForecast
             {
@@ -27,9 +36,9 @@ public class WeatherForecastController(DbModelContext dbContext, ILogger<Weather
     [HttpGet("insecure/{city}")]
     public IEnumerable<WeatherForecast> GetInsecure([FromRoute]string city)
     {
-        logger.LogDebug($"Get insecure called for city {city}.");
+        _logger.LogDebug($"Get insecure called for city {city}.");
 
-        var results = dbContext.Forecasts.Where(f => f.City.ToLower().Equals(city.ToLower())).ToList();
+        var results = _dbContext.Forecasts.Where(f => f.City.ToLower().Equals(city.ToLower())).ToList();
 
         var transformed = results.Select(f => new WeatherForecast
             {
