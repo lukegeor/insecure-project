@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using InsecureProject.Database;
-using Microsoft.EntityFrameworkCore;
 
 namespace InsecureProject.Controllers;
 
@@ -13,13 +12,16 @@ public class WeatherForecastController(DbModelContext dbContext, ILogger<Weather
     {
         logger.LogDebug($"Get called for city {city}.");
 
-        return dbContext.Forecasts.Where(f => f.City.ToLower().Equals(city.ToLower()))
+        var results = dbContext.Forecasts.Where(f => f.City.ToLower().Equals(city.ToLower())).ToList();
+        var transformed = results 
             .Select(f => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
                 TemperatureC = f.Temperature,
                 Summary = f.Summary
             });
+
+        return transformed;
     }
 
     [HttpGet("insecure/{city}")]
@@ -27,9 +29,8 @@ public class WeatherForecastController(DbModelContext dbContext, ILogger<Weather
     {
         logger.LogDebug($"Get insecure called for city {city}.");
 
-        var results = dbContext.Forecasts.FromSqlRaw(
-            $"select * from Forecasts where lower(City) = lower('{city}');")
-            .ToList();
+        var results = dbContext.Forecasts.Where(f => f.City.ToLower().Equals(city.ToLower())).ToList();
+
         var transformed = results.Select(f => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
