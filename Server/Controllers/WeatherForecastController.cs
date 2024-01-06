@@ -40,11 +40,12 @@ public class WeatherForecastController : ControllerBase
     [HttpGet("insecure/{city}")]
     public IEnumerable<WeatherForecast> GetInsecure([FromRoute]string city)
     {
-        _logger.LogDebug($"Get insecure called for city {city}.");
-
-        var results = _dbContext.Forecasts.FromSqlInterpolated(
+        var results = _dbContext.Forecasts.FromSqlRaw(
             $"select * from Forecasts where lower(City) = lower('{city}');")
             .ToList();
+
+        _logger.LogDebug($"Get insecure called for city {city}.");
+        
         var transformed = results.Select(f => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
