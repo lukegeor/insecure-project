@@ -42,7 +42,7 @@ public class WeatherForecastController : ControllerBase
     {
         _logger.LogDebug($"Get insecure called for city {city}.");
 
-        var results = _dbContext.Forecasts.FromSqlInterpolated(
+        var results = _dbContext.Forecasts.FromSqlRaw(
             $"select * from Forecasts where lower(City) = lower('{city}');")
             .ToList();
         var transformed = results.Select(f => new WeatherForecast
