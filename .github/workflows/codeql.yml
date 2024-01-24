@@ -89,6 +89,11 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Print directory
+      shell: bash
+      run: |
+        ls -l
+
     - name: Upload CodeQL Results
       uses: actions/upload-artifact@v4
       with:
