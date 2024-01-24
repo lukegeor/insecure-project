@@ -87,5 +87,5 @@ jobs:
     - name: Upload CodeQL Results
       uses: actions/upload-artifact@v4
       with:
-        name: "CodeQL SARIF"
+        name: "${{ matrix.language }} CodeQL SARIF"
         path: ${{ steps.perform-codeql-analysis.outputs.sarif-output }}
