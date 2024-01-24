@@ -79,6 +79,13 @@ jobs:
     #     ./location_of_script_within_repo/buildscript.sh
 
     - name: Perform CodeQL Analysis
+      id: perform-codeql-analysis
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
+
+    - name: Upload CodeQL Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: "CodeQL SARIF"
+        path: ${{ steps.perform-codeql-analysis.outputs.sarif-output }}
