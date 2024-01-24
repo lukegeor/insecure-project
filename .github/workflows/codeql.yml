@@ -83,9 +83,14 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
+        
+    - name: Generate Security Report
+      uses: peter-murray/github-security-report-action@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload CodeQL Results
       uses: actions/upload-artifact@v4
       with:
-        name: "${{ matrix.language }} CodeQL SARIF"
-        path: ${{ steps.perform-codeql-analysis.outputs.sarif-output }}
+        name: "${{ matrix.language }} CodeQL Report"
+        path: summary.pdf
